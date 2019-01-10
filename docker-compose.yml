@@ -1,0 +1,6 @@
+# Rethink DB
+rethink:
+  build : .
+  container_name: rethink
+  volumes:
+      - .:/app

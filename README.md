@@ -7,7 +7,7 @@ To enable the email sending via gmail just activate the following option [https:
 ## Setup
 First of all install dependencies
 ``` bash
-    pip install pynput
+    pip install -r ./requirements.txt
 ```
 On the initializing method of the PyKey class exists some properties to define the email account and other data.
 Fill them before start the script
