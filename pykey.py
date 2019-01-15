@@ -230,12 +230,7 @@ class PyKey:
         from functools import partial
         import atexit
         import os
-
-        try:
-            import keyboard
-        except:
-            print("Please Install keyboard modules")
-        exit(0)
+        import keyboard
 
         if self.CLEAR_ON_STARTUP:
             os.remove(self.LOG_FILE)
