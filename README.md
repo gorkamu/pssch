@@ -18,7 +18,20 @@ Fill them before start the script
     self.GMAIL_PWD='****'
     self.LOG_FILE = '/Users/blabla/log.dat'
 ```
+## How to install
+If you are going to install it on Windows, first you have to install the dependencies:
+``` bash
+    pip install -r ./requirements.txt
+```
+or
+``` bash
+    pip install keyboard
+```
 
+Then you can launch it with the following command
+``` bash
+    python pykey.py
+```
 
 ## Development resources
 - https://www.programcreek.com/python/example/95388/pynput.keyboard.Listener
