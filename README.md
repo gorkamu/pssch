@@ -1,4 +1,4 @@
-# 🤐🤐 Pssch
+# 🤐🤐 Pssch - Multiplatform Keylogger
 
 This is a proof of concept of a multiplatform python keylogger.
 This script runs on windows as well as mac osx and linux.
