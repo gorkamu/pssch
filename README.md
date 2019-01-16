@@ -47,7 +47,7 @@ To launch and run the script:
 
 if during the execution the script fails due to lack of parameters you will see something like the following
 
-![Pssch Keylogger Error](https://i.imgur.com/7DQQgwB.png)
+![Pssch Keylogger Error](https://i.imgur.com/7oycKZq.png)
 
 ## Development resources
 - https://www.programcreek.com/python/example/95388/pynput.keyboard.Listener
