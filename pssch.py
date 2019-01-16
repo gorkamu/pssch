@@ -229,7 +229,6 @@ class Pssch:
         """
         from functools import partial
         import atexit
-        import os
         import keyboard
         from winreg import *
 
