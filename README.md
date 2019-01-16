@@ -1,4 +1,4 @@
-# PyKey
+# 🤐🤐 Pssch
 
 This is a proof of concept of a multiplatform python keylogger.
 This script runs on windows as well as mac osx and linux.
@@ -28,10 +28,10 @@ If this method throws you an error, launch the following commands:
 ```
 
 After that, you have to configure the script's properties such as LOG_FILE or GMAIL_ACCOUNT.
-To do that just edit the pykey.py file and modifity the following properties;
+To do that just edit the pssch.py file and modifity the following properties;
 
 ``` bash
-    self.EMAIL_FROM='pykey@gmail.com'
+    self.EMAIL_FROM='pssch@gmail.com'
     self.EMAIL_TO='blablabla@gmail.com'
     self.GMAIL_USER='bliblibli@gmail.com'
     self.GMAIL_PWD='****'
@@ -42,12 +42,12 @@ Fill them before start the script
 
 To launch and run the script:
 ``` bash
-    python pykey.py
+    python pssch.py
 ```
 
 if during the execution the script fails due to lack of parameters you will see something like the following
 
-![PyKey Keylogger Error](https://i.imgur.com/7DQQgwB.png)
+![Pssch Keylogger Error](https://i.imgur.com/7DQQgwB.png)
 
 ## Development resources
 - https://www.programcreek.com/python/example/95388/pynput.keyboard.Listener
