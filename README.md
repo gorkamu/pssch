@@ -19,11 +19,31 @@ Things that work halfway:
 To enable the email sending via gmail just activate the following option [https://myaccount.google.com/lesssecureapps?pli=1](https://myaccount.google.com/lesssecureapps?pli=1)
 
 ## How to install
-First of all install dependencies
+If you are on Linux or in Mac OSx you can run the install.sh file.
+That file will install you all the needed dependencies to run the project. 
+Minimun dependencies:
+- Python 2.7.3
+- Pip 1.2.1
+- Setuptools 0.6
+``` bash
+    sudo chmod 775 install.sh
+    ./install.sh
+```
+
+![Pssch Linux Installation](https://i.imgur.com/NSWB3Kl.png)
+
+If this fails or you are on Windows run individually each of these steps:
+- Download and Install Python 2.7 -> https://www.python.org/download/releases/2.7/
+- Download and Install Pip 1.2.1 -> https://pip.pypa.io/en/stable/installing/
+- Download and Install Setuptools -> https://pypi.org/project/setuptools/
+- Install project dependencies...
+
 ``` bash
     pip install -r ./requirements.txt
 ```
+
 If this method throws you an error, launch the following commands:
+
 ``` bash
     pip install pynput
     pip install keyboard
