@@ -60,9 +60,23 @@ addToStartup() {
   cd /lib/systemd/system
   touch pssch.service
   FILE='/lib/systemd/system/pssch.service'
+  echo $PWD
 cat > $FILE <<- EOM
-Line 1.
-Line 2.
+[Unit]
+Description=pssch
+After=network.target network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+Restart=always
+ExecStartPre=/bin/mkdir -p /run/pssch
+PIDFile=/run/pssch/service.pid
+ExecStart=/usr/bin/python $PWD/poc.py
+
+[Install]
+WantedBy=multi-user.target
 EOM
 
 }
@@ -78,6 +92,7 @@ bye() {
 greetings
 addToStartup
 exit
+
 echo "Checking dependencies..."
 sleep 1
 echo "Checking Python installation..."
