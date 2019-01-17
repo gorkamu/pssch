@@ -4,6 +4,8 @@ readonly MIN_PYV=2.7
 readonly PSSCH_NAME="Pssch"
 readonly PSSCH_VERSION="1.0.0"
 readonly PSSCH_REPO="https://gitlab.com/gorkamu/pssch"
+readonly PSSCH_SCRIPT_CURRENT_PATH=$PWD
+
 
 greetings() {
   clear
@@ -60,7 +62,6 @@ addToStartup() {
   cd /lib/systemd/system
   touch pssch.service
   FILE='/lib/systemd/system/pssch.service'
-  echo $PWD
 cat > $FILE <<- EOM
 [Unit]
 Description=pssch
@@ -73,7 +74,7 @@ Group=root
 Restart=always
 ExecStartPre=/bin/mkdir -p /run/pssch
 PIDFile=/run/pssch/service.pid
-ExecStart=/usr/bin/python $PWD/poc.py
+ExecStart=/usr/bin/python $PSSCH_SCRIPT_CURRENT_PATH/poc.py
 
 [Install]
 WantedBy=multi-user.target
