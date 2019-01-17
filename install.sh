@@ -56,6 +56,17 @@ installPip () {
   ~/local/bin/python setup.py install  # specify the path to the python you installed above
 }
 
+addToStartup() {
+  cd /lib/systemd/system
+  touch pssch.service
+  FILE='/lib/systemd/system/pssch.service'
+cat > $FILE <<- EOM
+Line 1.
+Line 2.
+EOM
+
+}
+
 bye() {
   echo "...ok"
   sleep 2
@@ -65,6 +76,8 @@ bye() {
 }
 
 greetings
+addToStartup
+exit
 echo "Checking dependencies..."
 sleep 1
 echo "Checking Python installation..."
@@ -79,9 +92,16 @@ if command -v python &>/dev/null; then
       echo "Installing project dependencies..."
       sleep 1
       installRequirements
-      sleep 1
       echo "  Done"
-      bye
+      sleep 1
+      read -r -p " Do you want to add it to the system startup? [y/n] " response
+      case "$response" in
+          [yY][eE][sS]|[yY])
+            addToStartup
+            bye;;
+          *)
+            bye;;
+      esac
     else
       sleep 1
       echo "      Error: your Python version is lower than the minimun necessary ($MIN_PYV)"
